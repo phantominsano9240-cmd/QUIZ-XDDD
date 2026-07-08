@@ -86,9 +86,13 @@
         const btnSi = document.getElementById('btn-si');
         const btnNo = document.getElementById('btn-no');
 
-        // Función para mover el botón SÍ en la pregunta 2
-        function moverBotonSi() {
-            const container = document.getElementById('btn-container');
+      // Activamos el troleo para computadoras y celulares
+btnSi.addEventListener('mouseover', moverBotonSi);
+btnSi.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Evita el click accidental en celular
+    moverBotonSi();
+});
+btnSi.addEventListener('click', moverBotonSi);
             // Genera posiciones aleatorias dentro del contenedor (o de la pantalla si prefieres)
             const x = Math.random() * (window.innerWidth - btnSi.offsetWidth - 50);
             const y = Math.random() * (window.innerHeight - btnSi.offsetHeight - 50);
