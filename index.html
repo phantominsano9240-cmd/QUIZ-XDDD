@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Especial ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s ease;
+            overflow: hidden;
+        }
+
+        .quiz-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        h2 {
+            color: #ff4d6d;
+            margin-bottom: 30px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        .btn-si {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-no {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Pantalla en negro */
+        .pantalla-negra {
+            background-color: black !important;
+        }
+        .pantalla-negra .quiz-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container" id="quiz">
+        <h2 id="pregunta">¿Me amas?</h2>
+        <div class="btn-container" id="btn-container">
+            <button class="btn-si" id="btn-si" onclick="siguientePregunta(true)">Sí</button>
+            <button class="btn-no" id="btn-no" onclick="siguientePregunta(false)">No</button>
+        </div>
+    </div>
+
+    <script>
+        let paso = 1;
+        const preguntaTxt = document.getElementById('pregunta');
+        const btnSi = document.getElementById('btn-si');
+        const btnNo = document.getElementById('btn-no');
+
+        // Función para mover el botón SÍ en la pregunta 2
+        function moverBotonSi() {
+            const container = document.getElementById('btn-container');
+            // Genera posiciones aleatorias dentro del contenedor (o de la pantalla si prefieres)
+            const x = Math.random() * (window.innerWidth - btnSi.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - btnSi.offsetHeight - 50);
+            
+            btnSi.style.position = 'fixed';
+            btnSi.style.left = x + 'px';
+            btnSi.style.top = y + 'px';
+        }
+
+        function siguientePregunta(respuesta) {
+            // --- PASO 1: ¿Me amas? ---
+            if (paso === 1) {
+                if (respuesta === false) {
+                    // Si elige NO, pantalla en negro absoluta
+                    document.body.classList.add('pantalla-negra');
+                } else {
+                    // Si elige SÍ, pasa a la siguiente
+                    paso = 2;
+                    preguntaTxt.innerText = '¿Soy lindo?';
+                    
+                    // Activamos el troleo para el botón SÍ usando 'mouseover' y 'click' por si acaso
+                    btnSi.addEventListener('mouseover', moverBotonSi);
+                    btnSi.addEventListener('click', moverBotonSi); 
+                }
+            } 
+            // --- PASO 2: ¿Soy lindo? ---
+            else if (paso === 2) {
+                // Aquí el SÍ no se puede clickear, así que solo avanza si presiona NO
+                if (respuesta === false) {
+                    // Limpiamos los eventos del troleo
+                    btnSi.removeEventListener('mouseover', moverBotonSi);
+                    btnSi.removeEventListener('click', moverBotonSi);
+                    // Resetear la posición del botón SÍ por si quedó flotando por ahí
+                    btnSi.style.position = 'static';
+
+                    // Siguiente pregunta (Idea extra)
+                    paso = 3;
+                    preguntaTxt.innerText = '¿Quién manda en la relación?';
+                    btnSi.innerText = 'Tú';
+                    btnNo.innerText = 'Yo';
+                }
+            }
+            // --- PASO 3: ¿Quién manda? ---
+            else if (paso === 3) {
+                if (respuesta === true) { // Eligió "Tú"
+                    paso = 4;
+                    preguntaTxt.innerText = '¿Me vas a consentir hoy?';
+                    btnSi.innerText = 'Sí';
+                    btnNo.innerText = 'Obvio sí';
+                } else {
+                    alert('¡Error de sistema! Intenta otra vez (sé sincera) 👀');
+                }
+            }
+            // --- FINAL FELIZ ---
+            else if (paso === 4) {
+                preguntaTxt.innerText = '¡Sabía que elegirías la opción correcta! Sabes que te amo inmensamente. ❤️✨';
+                btnSi.style.display = 'none';
+                btnNo.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
