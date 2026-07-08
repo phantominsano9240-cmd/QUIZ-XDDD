@@ -61,7 +61,6 @@
             color: white;
         }
 
-        /* Pantalla en negro */
         .pantalla-negra {
             background-color: black !important;
         }
@@ -86,14 +85,9 @@
         const btnSi = document.getElementById('btn-si');
         const btnNo = document.getElementById('btn-no');
 
-      // Activamos el troleo para computadoras y celulares
-btnSi.addEventListener('mouseover', moverBotonSi);
-btnSi.addEventListener('touchstart', function(e) {
-    e.preventDefault(); // Evita el click accidental en celular
-    moverBotonSi();
-});
-btnSi.addEventListener('click', moverBotonSi);
-            // Genera posiciones aleatorias dentro del contenedor (o de la pantalla si prefieres)
+        function moverBotonSi(e) {
+            if (e && e.preventDefault) e.preventDefault(); 
+            
             const x = Math.random() * (window.innerWidth - btnSi.offsetWidth - 50);
             const y = Math.random() * (window.innerHeight - btnSi.offsetHeight - 50);
             
@@ -103,41 +97,34 @@ btnSi.addEventListener('click', moverBotonSi);
         }
 
         function siguientePregunta(respuesta) {
-            // --- PASO 1: ¿Me amas? ---
             if (paso === 1) {
                 if (respuesta === false) {
-                    // Si elige NO, pantalla en negro absoluta
                     document.body.classList.add('pantalla-negra');
                 } else {
-                    // Si elige SÍ, pasa a la siguiente
                     paso = 2;
                     preguntaTxt.innerText = '¿Soy lindo?';
                     
-                    // Activamos el troleo para el botón SÍ usando 'mouseover' y 'click' por si acaso
                     btnSi.addEventListener('mouseover', moverBotonSi);
+                    btnSi.addEventListener('touchstart', moverBotonSi);
                     btnSi.addEventListener('click', moverBotonSi); 
                 }
             } 
-            // --- PASO 2: ¿Soy lindo? ---
             else if (paso === 2) {
-                // Aquí el SÍ no se puede clickear, así que solo avanza si presiona NO
                 if (respuesta === false) {
-                    // Limpiamos los eventos del troleo
                     btnSi.removeEventListener('mouseover', moverBotonSi);
+                    btnSi.removeEventListener('touchstart', moverBotonSi);
                     btnSi.removeEventListener('click', moverBotonSi);
-                    // Resetear la posición del botón SÍ por si quedó flotando por ahí
+                    
                     btnSi.style.position = 'static';
 
-                    // Siguiente pregunta (Idea extra)
                     paso = 3;
                     preguntaTxt.innerText = '¿Quién manda en la relación?';
                     btnSi.innerText = 'Tú';
                     btnNo.innerText = 'Yo';
                 }
             }
-            // --- PASO 3: ¿Quién manda? ---
             else if (paso === 3) {
-                if (respuesta === true) { // Eligió "Tú"
+                if (respuesta === true) {
                     paso = 4;
                     preguntaTxt.innerText = '¿Me vas a consentir hoy?';
                     btnSi.innerText = 'Sí';
@@ -146,7 +133,6 @@ btnSi.addEventListener('click', moverBotonSi);
                     alert('¡Error de sistema! Intenta otra vez (sé sincera) 👀');
                 }
             }
-            // --- FINAL FELIZ ---
             else if (paso === 4) {
                 preguntaTxt.innerText = '¡Sabía que elegirías la opción correcta! Sabes que te amo inmensamente. ❤️✨';
                 btnSi.style.display = 'none';
@@ -154,5 +140,7 @@ btnSi.addEventListener('click', moverBotonSi);
             }
         }
     </script>
+</body>
+</html>
 </body>
 </html>
